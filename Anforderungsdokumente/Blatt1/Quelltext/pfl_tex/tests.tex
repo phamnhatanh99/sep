@@ -1,0 +1,134 @@
+\chapter{Systemtestfälle}
+
+Hier sollen verschiedene Szenarien beschrieben werden, mithilfe deren Sie später Systemtests ausführen und die erwarteten Ergebnisse darstellen.
+
+\newcounter{tf}\setcounter{tf}{10}
+
+\begin{description}[leftmargin=5em, style=sameline]
+
+\begin{lhp}{tf}{TF}{tests:anmelden}
+	\item [Name:] Spieler anmelden.
+	\item [Motivation:] Testet, ob die Anmeldung in das System korrekt funktioniert.
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Zugriffsdaten sind vorhanden und richtig} \\ $\implies$ Spieler wird in die Lobby bewegt.
+			\item \textit{Benutzername ist registriert, Passwort ist falsch} \\ $\implies$ Fehlermeldung wird angezeigt.
+			\item \textit{Benutzername ist nicht registriert} \\ $\implies$ Fehlermeldung wird angezeigt.
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:zugriff}
+	\item [Relevante Use Cases:] \ref{uc:anmeld}, \ref{uc:daten prüfen}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:registrieren}
+	\item [Name:] Spieler registrieren.
+	\item [Motivation:] Testet, ob die Registrierung korrekt funktioniert.
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Benutzername ist noch nicht registriert und Passwort ist sicher genug} \\ $\implies$ Benutzerdaten werden in Datenbank gespeichert. Erfolgsmeldung und Anmeldungsfenster wird angezeigt.
+			\item \textit{Benutzername ist schon registriert} \\ $\implies$ Fehlermeldung wird angezeigt.
+			\item \textit{Benutzername ist noch nicht registriert und Passwort ist nicht sicher genug} \\ $\implies$ Fehlermeldung wird angezeigt.
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:zugriff}
+	\item [Relevante Use Cases:] \ref{uc:registrieren}, \ref{uc:daten prüfen}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:konto_loeschen}
+	\item [Name:] Konto löschen
+	\item [Motivation:] Testet, ob ein Konto korrekt gelöscht wird.
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Eingeloggter Spieler gibt sein Passwort ein. Passwort ist korrekt.} \\ $\implies$ Spieler wird direkt abgemeldet und sein Eintrag in Bestenlist wird gelöscht. Benutzerdaten werden von Datenbank gelöscht. Vorraum-Interface wird angezeigt.  
+			\item \textit{Eingeloggter Spieler gibt sein Passwort ein. Passwort ist falsch.} \\ $\implies$ Fehlermeldung wird angezeigt. 
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:zugriff},\ref{funk:bestenliste}
+	\item [Relevante Use Cases:] \ref{uc:löschen} \ref{uc:daten prüfen}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:eintreten}
+	\item [Name:] Spielraum eintreten.
+	\item [Motivation:] Testet, ob der Eintritt korrekt funktioniert.
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Kein Platz mehr im Spielraum} \\ $\implies$ Fehlermeldung wird angezeigt.
+			\item \textit{Noch freier Platz verfügbar} \\ $\implies$ Spieler wird in den Spielraum bewegt. Die Liste der Spieler, die gerade in diesem Raum sind, wird aktualisiert.
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:spielraum}
+	\item [Relevante Use Cases:] \ref{uc:spielraum eintreten}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:raum_erstellen}
+	\item [Name:] Spielraum erstellen.
+	\item [Motivation:] Testet, ob ein neuer Spielraum korrekt erstellt wird.
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Spieler legt die Kapazität (zwischen 2 und 6) fest.} \\ $\implies$ Erfolgsmeldung. Ein neuer Spielraum wird erstellt und seine Spielerliste wird mit dem Spieler initialisiert. Der Spieler wird in seinen neuen Spielraum bewegt.  
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:spielraum}
+	\item [Relevante Use Cases:] \ref{uc:spielraum erstellen}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:raum_verlassen}
+	\item [Name:] Spielraum verlassen.
+	\item [Motivation:] Testet, ob das Spiel korrekt fortgesetzt wird oder der Raum korrekt gelöscht wird, nachdem ein Spieler den Raum verlässt. 
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Kein Spiel findet gerade statt. Der Spieler verlässt den Spielraum. Raum ist nun leer} \\ $\implies$ Raum wird gelöscht.  
+			\item \textit{Andere sind noch am Spielen. Der Spieler verlasst das Raum} \\ $\implies$ Ein Bot wird  instanziiert und spielt anstelle von dem Spieler weiter. 
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:spielraum}, \ref{funk:spielverw}
+	\item [Relevante Use Cases:] \ref{uc:spielraum verlassen}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:raum_loeschen}
+	\item [Name:] Spielraum löschen.
+	\item [Motivation:] Testet, ob ein neuer Spielraum korrekt gelöscht wird.
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Alle Spieler haben den Spielraum verlassen} \\ $\implies$  Der Raum und seine Spielerliste werden gelöscht.
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:spielraum}
+	\item [Relevante Use Cases:] \ref{uc:spielraum verlassen}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:punkten}
+	\item [Name:] Punkten aktualisieren.
+	\item [Motivation:] Testet, ob nach jeder Hand die Punkte und Bestenliste korrekt aktualisiert werden. 
+	\item [Relevante Systemfunktionen:] \ref{funk:spielverw}, \ref{funk:bestenliste}
+	\item [Relevante Use Cases:] \ref{uc:spielen},\ref{uc:bestenliste}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:regeln}
+	\item [Name:] Spielregeln.
+	\item [Motivation:] Sicherstellen, dass Bots und Spieler sich an die Spielregeln halten.
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Unter der 4 vorgelegten Karten ist mindesten ein König} \\ $\implies$  Erster Spieler ist gefordert, König in König Stall zu schieben
+			\item \textit{ Spieler kann keine Karte auflegen} \\ $\implies$   Spieler ist gefordert, ein Chip einzuwerfen
+			\item \textit{Spieler will seine Runde beenden} \\ $\implies$  Spieler ist gefordert, vom Ziehstapel zu ziehen
+			\item \textit{Spieler zieht einen König} \\ $\implies$   Spieler ist gefordert, den König in König Staple zu legen
+			
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:spielverw} \ref{funk:bots}
+	\item [Relevante Use Cases:]\ref{uc:spielen}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:bots}
+	\item [Name:] Bot instanziieren.
+	\item [Motivation:] Testet, ob ein Bot erfolgreich instanziiert werden kann.
+	\item [Relevante Systemfunktionen:] \ref{funk:spielverw}, \ref{funk:bots}
+	\item [Relevante Use Cases:] \ref{uc:spielraum verlassen}, \ref{uc:bots}
+\end{lhp}
+
+\begin{lhp}{tf}{TF}{tests:chat}
+	\item [Name:] Chatfunktion
+	\item [Motivation:] Testet, ob ein eingeloggter Spieler Zugriffe auf Chats in Lobby und Spielräumen hat.
+	\item [Sczenarien:] \hfill
+		\begin{enumerate}
+			\item \textit{Spieler ist in der Lobby} \\ $\implies$ Spieler hat Zugriff auf Lobby-Chat  
+			\item \textit{Spieler ist in einem Spielraum} \\ $\implies$ Spieler hat Zugriff auf dem Chat seines Spielraums.
+		\end{enumerate}
+	\item [Relevante Systemfunktionen:] \ref{funk:chat}
+	\item [Relevante Use Cases:] \ref{uc:chatten}
+\end{lhp}
+
+\end{description}
